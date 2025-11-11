@@ -1,0 +1,20 @@
+salaries = [55000.75,99000.2,76980.25,25057.63,63250.45,66260.45,6453.789,66262.563]
+
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        min_idx = i
+        for j in range(i+1,n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+                
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    return arr
+    
+    
+print("original salaries",salaries)
+    
+    
+sel_sorted = selection_sort(salaries.copy())
+print("\nsalaries sorted using selection sort",sel_sorted)
+print("top 5 salaries",sel_sorted[-5:][::-1])
