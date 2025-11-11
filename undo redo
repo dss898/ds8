@@ -1,0 +1,78 @@
+class TextEditor:
+    def __init__(self):
+        self.document = "hello"
+        self.undo_stack= []
+        self.redu_stack = []
+        
+    def make_change(self, change):
+        self.undo_stack.append(self.document)
+        self.document += change
+        self.redu_stack.clear()
+        print("\nchange made")
+        self.display_state()
+        
+    def undo_action(self):
+        if self.undo_stack:
+            self.redu_stack.append(self.document)
+            self.document = self.undo_stack.pop()
+            print("\nundo performed")
+        else:
+            print("\nno more actions to undo")
+            self.display_state()
+     
+    def redo_action(self):  
+        if self.redo_stack:
+            self.undo_stack.append(self.document)
+            self.document = self.redu_stack.pop()
+            print("\nredu performed")
+        else:
+            print("\nno more actions to redo")
+            self.display_state()
+            
+    def display_state(self):
+        print("current document state"+self.document +"")
+        
+    def run_editor(self):
+        while True:
+            print("\n1.menu")
+            print("\n2.make change")
+            print("\n3.undo")
+            print("\n4.redu ")
+            print("\n5.display document state")
+            print("\n6.exit")
+            choice = input("enter your choice")
+            
+        if choice == '1':
+            change = input("enter text to add")
+            self.make_change(change)
+        elif choice =='2':
+            self.undo_action()
+        elif choice =='3':
+            self.redo_action() 
+        elif choice =='4':
+            self.display_state()
+        elif choice =='5':
+            print("exiting")
+            
+        else:
+            print("invalid choice")
+            
+editor = TextEditor()
+editor.run_editor()
+        
+        
+        
+        
+        output  
+1.menu
+
+2.make change
+
+3.undo
+
+4.redu 
+
+5.display document state
+
+6.exit
+enter your choice
