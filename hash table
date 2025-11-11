@@ -1,0 +1,130 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int nn;
+    Node* next;
+};
+
+class HashTable {
+    Node* ht[10];  // Array of pointers to Node, size 10
+public:
+    HashTable() {p
+        for(int i = 0; i < 10; i++)
+            ht[i] = NULL; 
+    }
+
+    void insert(int val);
+    void display();
+    void search();
+    void del();
+    int HashFun(int val);
+};
+
+int HashTable::HashFun(int val) {
+    return val % 10;
+}
+
+void HashTable::insert(int val) {
+    int index = HashFun(val);
+
+    Node* newNode = new Node;
+    newNode->nn = val;
+    newNode->next = NULL;
+
+    if (ht[index] == NULL) {
+        ht[index] = newNode;
+    } else {
+        newNode->next = ht[index];
+        ht[index] = newNode;
+    }
+
+    cout << val << " inserted at index "<<index<<endl;
+}
+
+void HashTable::display() {
+    for (int i = 0; i < 10; i++) {
+        cout << "Index " << i << ": ";
+        Node* temp = ht[i];
+        while (temp != NULL) {
+            cout << temp->nn << " -> ";
+            temp = temp->next;
+        }
+        cout << "NULL\n";
+    }
+}
+void HashTable::search() {
+	int num=0,ind,flag=0;
+	cout<<"Enter num to be searched:";
+	cin>>num;
+	ind=HashFun(num);
+	
+        Node* temp = ht[ind];
+        while (temp != NULL) {
+		if(num==temp->nn)
+		{
+			cout << "Num is present at "<<ind;
+			flag=1;
+			break;
+		}
+	    temp = temp->next;
+        }
+        if(flag==0)
+        cout<<num<<" is not there in hash table"<<endl;
+	}
+void HashTable::del() {
+	int num, ind, flag = 0;
+    cout << "Enter num to be deleted: ";
+    cin >> num;
+    ind = HashFun(num);
+
+    Node* temp = ht[ind];
+    Node* prev = NULL;
+
+    while (temp != NULL) {
+        if (num == temp->nn) {
+            if (prev == NULL) {
+                // Deleting first node in the chain
+                ht[ind] = temp->next;
+            } else {
+                // Deleting node in between or at end
+                prev->next = temp->next;
+            }
+            delete temp; // free memory
+            cout << num << " deleted from hash table" << endl;
+            flag = 1;
+            break;
+        }
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (flag == 0)
+        cout << num << " is not there in hash table" << endl;
+}
+int main() {
+    HashTable h1;
+    int ch=0, val;
+
+    while (ch!=5) {
+        cout << "\n1.Insert\n2.Display\n3.Search\n4.Delete\n5.Exit\nEnter Choice: ";
+        cin >> ch;
+        switch(ch) {
+            case 1:
+                cout << "Enter value to insert: ";
+                cin >> val;
+                h1.insert(val);
+                break;
+            case 2:
+                h1.display();
+                break;
+            case 3:
+                h1.search();
+                break;
+	        case 4:
+		        h1.del();
+		        break;
+
+    		}
+	}
+}
