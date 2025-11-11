@@ -1,0 +1,16 @@
+salaries=[26.5,63.2,68.26,25.59,99.56,43.87,55.99,65,87.76]
+
+def bubble_sort(arr):
+    n=len(arr)
+    for i in range(n):
+        for j in range(0,n-i-1):
+            if arr[j]>arr[j+1]:
+                arr[j],arr[j+1]=arr[j+1],arr[j]
+    return arr
+    
+
+print("original salaries",salaries)
+
+bub_sorted = bubble_sort(salaries.copy())
+print("\nsalaries sorted using bubble sort",bub_sorted)
+print("top 5 highest salaries", bub_sorted[-5:][::-1])
