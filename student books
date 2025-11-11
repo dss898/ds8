@@ -1,0 +1,234 @@
+# Step 1: Input student details
+N = int(input("Enter the number of members: "))
+Students = {}
+
+for i in range(N):
+    name = input(f"Enter name of member {i + 1}: ").strip()
+    Students[name] = []  # Initialize with empty list of borrowed books
+
+# Step 2: Input book details
+M = int(input("\nEnter the number of books available in the library: "))
+AvailableBooks = []
+
+for i in range(M):
+    book_name = input(f"Enter name of book {i + 1}: ").strip()
+    AvailableBooks.append(book_name)
+
+# Step 3: Borrowing process
+for student in Students:
+    print(f"\nMember: {student}")
+    num_borrow = int(input(f"Enter number of books borrowed by {student}: "))
+    for j in range(num_borrow):
+        while True:
+            book_name = input(f"Enter name of book {j + 1} borrowed: ").strip()
+            if book_name in AvailableBooks:
+                Students[student].append(book_name)
+                break
+            else:
+                print("Book not available in library. Please enter a valid book name.")
+
+# Step 4: Pre-compute statistics
+TotalBorrowings = sum(len(books) for books in Students.values())
+Average = TotalBorrowings / N if N > 0 else 0
+
+BorrowCounts = []
+MaxBorrowing = -1
+MinBorrowing = 9999  # Set to a large number initially
+ZeroCount = 0
+
+for books in Students.values():
+    count = len(books)
+    BorrowCounts.append(count)
+
+    # Max calculation
+    if MaxBorrowing == -1 or count > MaxBorrowing:
+        MaxBorrowing = count
+
+    # Min calculation
+    if count < MinBorrowing:
+        MinBorrowing = count
+
+    # Zero count
+    if count == 0:
+        ZeroCount += 1
+
+# Handle edge case if no students exist
+if N == 0:
+    MaxBorrowing = 0
+    MinBorrowing = 0
+    ZeroCount = 0
+
+BookFrequency = {}
+for books in Students.values():
+    for book in books:
+        BookFrequency[book] = BookFrequency.get(book, 0) + 1
+
+MostFrequentBooks = []
+MaxFreq = 0
+if BookFrequency:
+    MaxFreq = max(BookFrequency.values())
+    MostFrequentBooks = [book for book, freq in BookFrequency.items() if freq == MaxFreq]
+
+# Step 5: Menu loop
+while True:
+    print("\n--- Library Report Menu ---")
+    print("1. Average number of books borrowed")
+    print("2. Maximum and Minimum number of books borrowed")
+    print("3. Number of Members with 0 Borrowings")
+    print("4. Most Frequently Borrowed Book(s)")
+    print("5. Exit")
+
+    choice = input("Enter your choice (1-5): ").strip()
+
+    if choice == '1':
+        print(f"Average Borrowings: {Average:.2f}")
+    elif choice == '2':
+        print(f"Maximum Borrowings: {MaxBorrowing}")
+        print(f"Minimum Borrowings: {MinBorrowing}")
+    elif choice == '3':
+        print(f"Number of Members with 0 Borrowings: {ZeroCount}")
+    elif choice == '4':
+        if MostFrequentBooks:
+            print("Most Frequently Borrowed Book(s): " + ", ".join(MostFrequentBooks) + f" (borrowed {MaxFreq} times)")
+        else:
+            print("Most Frequently Borrowed Book: None")
+    elif choice == '5':
+        print("Exiting the program.")
+        break
+    else:
+        print("Invalid choice. Please enter a number between 1 and 5.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Function to calculate average borrowings
+def calculate_average(students, total_students):
+    total = 0
+    for books in students.values():
+        total += len(books)
+    return total / total_students if total_students > 0 else 0
+
+# Function to calculate max, min and zero count without using built-in max, min, count
+def calculate_max_min_zero(students):
+    max_borrow = -1
+    min_borrow = 9999
+    zero_count = 0
+    borrow_counts = []
+
+    for books in students.values():
+        count = len(books)
+        borrow_counts.append(count)
+
+        if count > max_borrow:
+            max_borrow = count
+        if count < min_borrow:
+            min_borrow = count
+        if count == 0:
+            zero_count += 1
+
+    # Edge case when there are no students
+    if not students:
+        return 0, 0, 0
+    return max_borrow, min_borrow, zero_count
+
+# Function to find most frequently borrowed books
+def find_most_frequent_books(students):
+    frequency = {}
+    for books in students.values():
+        for book in books:
+            if book in frequency:
+                frequency[book] += 1
+            else:
+                frequency[book] = 1
+
+    most_frequent = []
+    max_freq = 0
+
+    for book in frequency:
+        if frequency[book] > max_freq:
+            max_freq = frequency[book]
+
+    for book, count in frequency.items():
+        if count == max_freq:
+            most_frequent.append(book)
+
+    return most_frequent, max_freq
+
+# ------------------ MAIN PROGRAM ------------------
+
+# Step 1: Input student details
+N = int(input("Enter the number of members: "))
+Students = {}
+
+for i in range(N):
+    name = input(f"Enter name of member {i + 1}: ").strip()
+    Students[name] = []  # Initialize with empty list of borrowed books
+
+# Step 2: Input book details
+M = int(input("\nEnter the number of books available in the library: "))
+AvailableBooks = []
+
+for i in range(M):
+    book_name = input(f"Enter name of book {i + 1}: ").strip()
+    AvailableBooks.append(book_name)
+
+# Step 3: Borrowing process
+for student in Students:
+    print(f"\nMember: {student}")
+    num_borrow = int(input(f"Enter number of books borrowed by {student}: "))
+    for j in range(num_borrow):
+        while True:
+            book_name = input(f"Enter name of book {j + 1} borrowed: ").strip()
+            if book_name in AvailableBooks:
+                Students[student].append(book_name)
+                break
+            else:
+                print("Book not available in library. Please enter a valid book name.")
+
+# Step 4: Menu loop
+while True:
+    print("\n--- Library Report Menu ---")
+    print("1. Average number of books borrowed")
+    print("2. Maximum and Minimum number of books borrowed")
+    print("3. Number of Members with 0 Borrowings")
+    print("4. Most Frequently Borrowed Book(s)")
+    print("5. Exit")
+
+    choice = input("Enter your choice (1-5): ").strip()
+
+    if choice == '1':
+        avg = calculate_average(Students, N)
+        print(f"Average Borrowings: {avg:.2f}")
+    elif choice == '2':
+        max_borrow, min_borrow, _ = calculate_max_min_zero(Students)
+        print(f"Maximum Borrowings: {max_borrow}")
+        print(f"Minimum Borrowings: {min_borrow}")
+    elif choice == '3':
+        _, _, zero_count = calculate_max_min_zero(Students)
+        print(f"Number of Members with 0 Borrowings: {zero_count}")
+    elif choice == '4':
+        most_frequent, max_freq = find_most_frequent_books(Students)
+        if most_frequent:
+            print("Most Frequently Borrowed Book(s): " + ", ".join(most_frequent) + f" (borrowed {max_freq} times)")
+        else:
+            print("Most Frequently Borrowed Book: None")
+    elif choice == '5':
+        print("Exiting the program.")
+        break
+    else:
+        print("Invalid choice. Please enter a number between 1 and 5.")
