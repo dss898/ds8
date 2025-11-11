@@ -1,0 +1,116 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+#define SIZE 10
+
+class Stack {
+    string data[SIZE];
+    int top;
+
+public:
+    Stack() { top = -1; }
+
+    int push(string val) {
+        if (top == SIZE - 1) {
+            cout << "Stack is full!" << endl;
+            return 0;
+        } else {
+            ++top; // increment first
+            data[top] = val; // copy data
+            return 1;
+        }
+    }
+
+    string pop() {
+        if (top == -1) {
+            cout << "Stack is empty!" << endl;
+            return "";
+        } else {
+            string temp = data[top];
+            top--;
+            return temp;
+        }
+    }
+
+    int isEmpty() {
+        if (top == -1) return 1;
+        else return 0;
+    }
+
+    void clear() {
+        top = -1;
+    }
+
+    void display() {
+        if (top == -1) {
+            cout << "(empty)" << endl;
+            return;
+        }
+        for (int i = top; i >= 0; i--) {
+            cout << data[i] << endl;
+        }
+    }
+
+    string peek() {
+        if (top == -1) return "";
+        return data[top];
+    }
+};
+
+int main() {
+    Stack undoStack, redoStack;
+    int choice;
+    string change;
+
+    while (true) {
+        cout << "\n1. Make Change\n2. Undo\n3. Redo\n4. Display Undo Stack\n5. Display Redo Stack\n6. Clear\n7. Exit\nChoice: ";
+        cin >> choice;
+        cin.ignore();
+
+        if (choice == 1) {
+            cout << "Enter change: ";
+            getline(cin, change);
+            undoStack.push(change);
+            redoStack.clear(); // once new change made, redo history cleared
+        }
+        else if (choice == 2) {
+            if (!undoStack.isEmpty()) {
+                string undone = undoStack.pop();
+                redoStack.push(undone);
+                cout << "Undone: " << undone << endl;
+            } else {
+                cout << "Nothing to undo!" << endl;
+            }
+        }
+        else if (choice == 3) {
+            if (!redoStack.isEmpty()) {
+                string redone = redoStack.pop();
+                undoStack.push(redone);
+                cout << "Redone: " << redone << endl;
+            } else {
+                cout << "Nothing to redo!" << endl;
+            }
+        }
+        else if (choice == 4) {
+            cout << "Undo Stack:" << endl;
+            undoStack.display();
+        }
+        else if (choice == 5) {
+            cout << "Redo Stack:" << endl;
+            redoStack.display();
+        }
+        else if (choice == 6) {
+            undoStack.clear();
+            redoStack.clear();
+            cout << "All history cleared!" << endl;
+        }
+        else if (choice == 7) {
+            break;
+        }
+        else {
+            cout << "Invalid choice!" << endl;
+        }
+    }
+    return 0;
+}
